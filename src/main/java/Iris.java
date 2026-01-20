@@ -49,6 +49,7 @@ public class Iris {
             case "todo" -> addTask(taskList, TaskType.TODO, input);
             case "deadline" -> addTask(taskList, TaskType.DEADLINE, input);
             case "event" -> addTask(taskList, TaskType.EVENT, input);
+            case "delete" -> deleteTask(taskList, input);
             default -> throw new InvalidCommandException();
         }
     }
@@ -66,20 +67,17 @@ public class Iris {
             throw new InvalidInputException("The description of a " + taskType.name() + " cannot be empty.");
         }
 
-        Task task = new Task();
-
+        Task task;
         switch (taskType) {
             case TODO -> task = taskList.addTask(TaskType.TODO, input);
             case DEADLINE -> task = taskList.addTask(TaskType.DEADLINE, input);
             case EVENT -> task = taskList.addTask(TaskType.EVENT, input);
+            default -> task = new Task();
         }
         System.out.println("Got it. I've added this task:\n   " + task);
 
         int numTasks = taskList.getNumTasks();
-        String message = numTasks == 1
-                ? "Now you have 1 task in the list."
-                : "Now you have " + numTasks + " tasks in the list.";
-        System.out.println(message);
+        printNumTasks(numTasks);
     }
 
     private static void markTask(TaskList taskList, String input, boolean isDone)
@@ -100,13 +98,43 @@ public class Iris {
             throw new InvalidInputException("Index must be from 1 to " + numTasks + ".");
         }
 
-        taskList.markTask(index, isDone);
-        Task task = taskList.getTask(index);
+        Task task = taskList.markTask(index, isDone);
 
         if (isDone) {
             System.out.println("Nice! I've marked this task as done:\n   " + task);
         } else {
             System.out.println("OK, I've marked this task as not done yet:\n   " + task);
         }
+    }
+
+    public static void deleteTask(TaskList taskList, String input)
+            throws InvalidCommandException, InvalidInputException {
+        int numTasks = taskList.getNumTasks();
+        if (numTasks == 0) {
+            throw new InvalidCommandException("There are no tasks right now.");
+        }
+
+        int index;
+        try {
+            index = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            throw new InvalidInputException("Please provide a valid index.");
+        }
+
+        if (index < 1 || index > numTasks) {
+            throw new InvalidInputException("Index must be from 1 to " + numTasks + ".");
+        }
+
+        Task task = taskList.deleteTask(index);
+        System.out.println("Noted. I've removed this task:\n   " + task);
+
+        printNumTasks(numTasks - 1);
+    }
+
+    public static void printNumTasks(int numTasks) {
+        String message = numTasks == 1
+                ? "Now you have 1 task in the list."
+                : "Now you have " + numTasks + " tasks in the list.";
+        System.out.println(message);
     }
 }
