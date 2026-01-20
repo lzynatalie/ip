@@ -23,8 +23,12 @@ public class Iris {
                 unmarkTask(taskList, userInput);
             } else if (userInput.contains("mark")) {
                 markTask(taskList, userInput);
-            } else {
-                addTask(taskList, userInput);
+            } else if (userInput.contains("todo")) {
+                addTask(taskList, TaskType.TODO, userInput);
+            } else if (userInput.contains("deadline")) {
+                addTask(taskList, TaskType.DEADLINE, userInput);
+            } else if (userInput.contains("event")) {
+                addTask(taskList, TaskType.EVENT, userInput);
             }
             System.out.println(HORIZONTAL_LINE);
             userInput = scanner.nextLine();
@@ -33,12 +37,35 @@ public class Iris {
     }
 
     private static void listTasks(TaskList taskList) {
-        System.out.println(taskList);
+        System.out.println("Here are the tasks in your list:\n" + taskList);
     }
 
-    private static void addTask(TaskList taskList, String userInput) {
-        taskList.addTask(userInput);
-        System.out.println("added: " + userInput);
+    private static void addTask(TaskList taskList, TaskType taskType, String userInput) {
+        String taskDescription = "";
+        Task task = new Task();
+        switch (taskType) {
+        case TODO:
+            taskDescription = userInput.substring(5);
+            task = taskList.addTask(TaskType.TODO, taskDescription);
+            break;
+        case DEADLINE:
+            taskDescription = userInput.substring(9);
+            task = taskList.addTask(TaskType.DEADLINE, taskDescription);
+            break;
+        case EVENT:
+            taskDescription = userInput.substring(6);
+            task = taskList.addTask(TaskType.EVENT, taskDescription);
+            break;
+        default:
+            break;
+        }
+        System.out.println("Got it. I've added this task:\n   " + task);
+
+        int numTasks = taskList.getNumTasks();
+        String message = numTasks == 1
+                ? "Now you have 1 task in the list."
+                : "Now you have " + numTasks + " tasks in the list.";
+        System.out.println(message);
     }
 
     private static void markTask(TaskList taskList, String userInput) {
