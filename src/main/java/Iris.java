@@ -16,48 +16,62 @@ public class Iris {
 
         System.out.println(welcomeMessage);
         String userInput = scanner.nextLine();
-        while (!userInput.equals("bye")) {
-            if (userInput.equals("list")) {
-                listTasks(taskList);
-            } else if (userInput.contains("unmark")) {
-                unmarkTask(taskList, userInput);
-            } else if (userInput.contains("mark")) {
-                markTask(taskList, userInput);
-            } else if (userInput.contains("todo")) {
-                addTask(taskList, TaskType.TODO, userInput);
-            } else if (userInput.contains("deadline")) {
-                addTask(taskList, TaskType.DEADLINE, userInput);
-            } else if (userInput.contains("event")) {
-                addTask(taskList, TaskType.EVENT, userInput);
+        while (true) {
+            String[] strings = userInput.split(" ", 2);
+            String command = strings[0];
+            String input = "";
+            if (strings.length > 1) {
+                input = strings[1];
             }
+
+            if (command.equals("bye")) {
+                break;
+            }
+
+            try {
+                handleCommand(command, taskList, input);
+            } catch (InvalidCommandException | InvalidInputException e) {
+                System.out.println(e.getMessage());
+            }
+
             System.out.println(HORIZONTAL_LINE);
             userInput = scanner.nextLine();
         }
         System.out.println(goodbyeMessage);
     }
 
-    private static void listTasks(TaskList taskList) {
+    private static void handleCommand(String command, TaskList taskList, String input)
+            throws InvalidCommandException, InvalidInputException {
+        switch (command) {
+            case "list" -> listTasks(taskList);
+            case "mark" -> markTask(taskList, input, true);
+            case "unmark" -> markTask(taskList, input, false);
+            case "todo" -> addTask(taskList, TaskType.TODO, input);
+            case "deadline" -> addTask(taskList, TaskType.DEADLINE, input);
+            case "event" -> addTask(taskList, TaskType.EVENT, input);
+            default -> throw new InvalidCommandException();
+        }
+    }
+
+    private static void listTasks(TaskList taskList) throws InvalidCommandException {
+        int numTasks = taskList.getNumTasks();
+        if (numTasks == 0) {
+            throw new InvalidCommandException("There are no tasks right now.");
+        }
         System.out.println("Here are the tasks in your list:\n" + taskList);
     }
 
-    private static void addTask(TaskList taskList, TaskType taskType, String userInput) {
-        String taskDescription = "";
+    private static void addTask(TaskList taskList, TaskType taskType, String input) throws InvalidInputException {
+        if (input.isEmpty()) {
+            throw new InvalidInputException("The description of a " + taskType.name() + " cannot be empty.");
+        }
+
         Task task = new Task();
+
         switch (taskType) {
-        case TODO:
-            taskDescription = userInput.substring(5);
-            task = taskList.addTask(TaskType.TODO, taskDescription);
-            break;
-        case DEADLINE:
-            taskDescription = userInput.substring(9);
-            task = taskList.addTask(TaskType.DEADLINE, taskDescription);
-            break;
-        case EVENT:
-            taskDescription = userInput.substring(6);
-            task = taskList.addTask(TaskType.EVENT, taskDescription);
-            break;
-        default:
-            break;
+            case TODO -> task = taskList.addTask(TaskType.TODO, input);
+            case DEADLINE -> task = taskList.addTask(TaskType.DEADLINE, input);
+            case EVENT -> task = taskList.addTask(TaskType.EVENT, input);
         }
         System.out.println("Got it. I've added this task:\n   " + task);
 
@@ -68,19 +82,31 @@ public class Iris {
         System.out.println(message);
     }
 
-    private static void markTask(TaskList taskList, String userInput) {
-        String[] inputs = userInput.split(" ");
-        int index = Integer.parseInt(inputs[1]);
-        Task task = taskList.getTask(index);
-        taskList.markTask(index);
-        System.out.println("Nice! I've marked this task as done:\n   " + task);
-    }
+    private static void markTask(TaskList taskList, String input, boolean isDone)
+            throws InvalidCommandException, InvalidInputException {
+        int numTasks = taskList.getNumTasks();
+        if (numTasks == 0) {
+            throw new InvalidCommandException("There are no tasks right now.");
+        }
 
-    private static void unmarkTask(TaskList taskList, String userInput) {
-        String[] inputs = userInput.split(" ");
-        int index = Integer.parseInt(inputs[1]);
+        int index;
+        try {
+            index = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            throw new InvalidInputException("Please provide a valid index.");
+        }
+
+        if (index < 1 || index > numTasks) {
+            throw new InvalidInputException("Index must be from 1 to " + numTasks + ".");
+        }
+
+        taskList.markTask(index, isDone);
         Task task = taskList.getTask(index);
-        taskList.unmarkTask(index);
-        System.out.println("OK, I've marked this task as not done yet:\n   " + task);
+
+        if (isDone) {
+            System.out.println("Nice! I've marked this task as done:\n   " + task);
+        } else {
+            System.out.println("OK, I've marked this task as not done yet:\n   " + task);
+        }
     }
 }
