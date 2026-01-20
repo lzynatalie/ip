@@ -18,14 +18,42 @@ public class Iris {
         String userInput = scanner.nextLine();
         while (!userInput.equals("bye")) {
             if (userInput.equals("list")) {
-                System.out.println(taskList);
+                listTasks(taskList);
+            } else if (userInput.contains("unmark")) {
+                unmarkTask(taskList, userInput);
+            } else if (userInput.contains("mark")) {
+                markTask(taskList, userInput);
             } else {
-                taskList.addTask(userInput);
-                System.out.println("added: " + userInput);
+                addTask(taskList, userInput);
             }
             System.out.println(HORIZONTAL_LINE);
             userInput = scanner.nextLine();
         }
         System.out.println(goodbyeMessage);
+    }
+
+    private static void listTasks(TaskList taskList) {
+        System.out.println(taskList);
+    }
+
+    private static void addTask(TaskList taskList, String userInput) {
+        taskList.addTask(userInput);
+        System.out.println("added: " + userInput);
+    }
+
+    private static void markTask(TaskList taskList, String userInput) {
+        String[] inputs = userInput.split(" ");
+        int index = Integer.parseInt(inputs[1]);
+        Task task = taskList.getTask(index);
+        taskList.markTask(index);
+        System.out.println("Nice! I've marked this task as done:\n   " + task);
+    }
+
+    private static void unmarkTask(TaskList taskList, String userInput) {
+        String[] inputs = userInput.split(" ");
+        int index = Integer.parseInt(inputs[1]);
+        Task task = taskList.getTask(index);
+        taskList.unmarkTask(index);
+        System.out.println("OK, I've marked this task as not done yet:\n   " + task);
     }
 }
