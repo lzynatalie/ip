@@ -12,11 +12,18 @@ public class Iris {
         String goodbyeMessage = "Bye. Hope to see you again soon!\n"
                 + HORIZONTAL_LINE;
         Scanner scanner = new Scanner(System.in);
+        TaskList taskList = new TaskList();
 
         System.out.println(welcomeMessage);
         String userInput = scanner.nextLine();
         while (!userInput.equals("bye")) {
-            System.out.println(userInput + "\n" + HORIZONTAL_LINE);
+            if (userInput.equals("list")) {
+                System.out.println(taskList);
+            } else {
+                taskList.addTask(userInput);
+                System.out.println("added: " + userInput);
+            }
+            System.out.println(HORIZONTAL_LINE);
             userInput = scanner.nextLine();
         }
         System.out.println(goodbyeMessage);
