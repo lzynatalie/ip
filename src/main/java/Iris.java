@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Iris {
     public static final String CHATBOT_NAME = "Iris";
     public static final String HORIZONTAL_LINE = "⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻";
@@ -9,8 +11,14 @@ public class Iris {
                 + HORIZONTAL_LINE;
         String goodbyeMessage = "Bye. Hope to see you again soon!\n"
                 + HORIZONTAL_LINE;
+        Scanner scanner = new Scanner(System.in);
 
         System.out.println(welcomeMessage);
+        String userInput = scanner.nextLine();
+        while (!userInput.equals("bye")) {
+            System.out.println(userInput + "\n" + HORIZONTAL_LINE);
+            userInput = scanner.nextLine();
+        }
         System.out.println(goodbyeMessage);
     }
 }
