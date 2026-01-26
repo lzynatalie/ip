@@ -83,6 +83,14 @@ public class TaskList {
         return tasks.size();
     }
 
+    public String toSaveFileFormat() {
+        String string = "";
+        for (int i = 0; i < tasks.size(); i++) {
+            string = string.concat(tasks.get(i).toSaveFileFormat() + "\n");
+        }
+        return string;
+    }
+
     @Override
     public String toString() {
         String string = "";

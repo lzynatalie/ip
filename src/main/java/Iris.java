@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Iris {
@@ -12,7 +15,8 @@ public class Iris {
         String goodbyeMessage = "Bye. Hope to see you again soon!\n"
                 + HORIZONTAL_LINE;
         Scanner scanner = new Scanner(System.in);
-        TaskList taskList = new TaskList();
+        Path filePath = Path.of("./data/iris.txt");
+        TaskList taskList = initialiseTaskList(filePath);
 
         System.out.println(welcomeMessage);
         String userInput = scanner.nextLine();
@@ -29,7 +33,7 @@ public class Iris {
             }
 
             try {
-                handleCommand(command, taskList, input);
+                handleCommand(filePath, taskList, command, input);
             } catch (InvalidCommandException | InvalidInputException e) {
                 System.out.println(e.getMessage());
             }
@@ -40,7 +44,7 @@ public class Iris {
         System.out.println(goodbyeMessage);
     }
 
-    private static void handleCommand(String command, TaskList taskList, String input)
+    private static void handleCommand(Path filePath, TaskList taskList, String command, String input)
             throws InvalidCommandException, InvalidInputException {
         switch (command) {
             case "list" -> listTasks(taskList);
@@ -51,6 +55,13 @@ public class Iris {
             case "event" -> addTask(taskList, TaskType.EVENT, input);
             case "delete" -> deleteTask(taskList, input);
             default -> throw new InvalidCommandException();
+        }
+
+        String saveFileContent = taskList.toSaveFileFormat();
+        try {
+            Files.writeString(filePath, saveFileContent);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -121,20 +132,60 @@ public class Iris {
             throw new InvalidInputException("Please provide a valid index.");
         }
 
-        if (index < 1 || index > numTasks) {
-            throw new InvalidInputException("Index must be from 1 to " + numTasks + ".");
+        try {
+            Task task = taskList.deleteTask(index);
+            System.out.println("Noted. I've removed this task:\n   " + task);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidInputException(e.getMessage());
         }
-
-        Task task = taskList.deleteTask(index);
-        System.out.println("Noted. I've removed this task:\n   " + task);
 
         printNumTasks(numTasks - 1);
     }
 
-    public static void printNumTasks(int numTasks) {
+    private static void printNumTasks(int numTasks) {
         String message = numTasks == 1
                 ? "Now you have 1 task in the list."
                 : "Now you have " + numTasks + " tasks in the list.";
         System.out.println(message);
+    }
+
+    private static TaskList initialiseTaskList(Path filePath) {
+        Path directoryPath = filePath.getParent();
+        TaskList taskList = new TaskList();
+
+        if (!Files.exists(directoryPath)) {
+            try {
+                Files.createDirectories(filePath.getParent());
+            } catch (IOException e) {
+                System.out.println("An error has occurred: " + e.getMessage());;
+            }
+        }
+
+        if (!Files.exists(filePath)) {
+            try {
+                Files.createFile(filePath);
+            } catch (IOException e) {
+                System.out.println("An error has occurred: " + e.getMessage());;
+            }
+            return taskList;
+        }
+
+        try {
+            Scanner fileReader = new Scanner(filePath);
+            while (fileReader.hasNext()) {
+                String task = fileReader.nextLine();
+                String[] taskParts = task.split(" \\| ");
+                boolean isDone = taskParts[1].equals("1");
+                switch (taskParts[0]) {
+                    case "T" -> taskList.addToDoTask(taskParts[2], isDone);
+                    case "D" -> taskList.addDeadlineTask(taskParts[2], isDone, taskParts[3]);
+                    case "E" -> taskList.addEventTask(taskParts[2], isDone, taskParts[3], taskParts[4]);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return taskList;
     }
 }
