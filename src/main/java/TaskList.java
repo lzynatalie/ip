@@ -5,67 +5,61 @@ public class TaskList {
 
     public TaskList() {}
 
-    public Task addTask(TaskType taskType, String taskDescription) throws InvalidInputException {
-        Task task;
-        switch (taskType) {
-            case TODO -> task = addToDoTask(taskDescription);
-            case DEADLINE -> task = addDeadlineTask(taskDescription);
-            case EVENT -> task = addEventTask(taskDescription);
-            default -> task = new Task();
+    public ToDoTask addToDoTask(String taskDescription) throws IllegalArgumentException {
+        return addToDoTask(taskDescription, false);
+    }
+
+    public ToDoTask addToDoTask(String taskDescription, boolean isDone) throws IllegalArgumentException {
+        if (taskDescription.isEmpty()) {
+            throw new IllegalArgumentException("The description of a TODO cannot be empty.");
         }
+        ToDoTask task = new ToDoTask(taskDescription, isDone);
         tasks.add(task);
         return task;
     }
 
-    private Task addToDoTask(String taskDescription) throws InvalidInputException {
-        String description = taskDescription.strip();
-        if (description.isEmpty()) {
-            throw new InvalidInputException("The description of a TODO cannot be empty.");
-        }
-        return new ToDoTask(description);
+    public DeadlineTask addDeadlineTask(String taskDescription, String by) throws IllegalArgumentException {
+        return addDeadlineTask(taskDescription, false, by);
     }
 
-    private Task addDeadlineTask(String taskDescription) throws InvalidInputException {
-        String[] deadlineParts = taskDescription.split("/", 2);
-
-        if (deadlineParts[0].isEmpty()) {
-            throw new InvalidInputException("The description of a DEADLINE cannot be empty.");
-        } else if (deadlineParts.length < 2 || deadlineParts[1].isEmpty() || !deadlineParts[1].startsWith("by ")) {
-            throw new InvalidInputException("deadline [description] /by [deadline]");
+    public DeadlineTask addDeadlineTask(String taskDescription, boolean isDone, String by)
+            throws IllegalArgumentException {
+        if (taskDescription.isEmpty()) {
+            throw new IllegalArgumentException("The description of a DEADLINE cannot be empty.");
         }
-
-        String description = deadlineParts[0].strip();
-        String by = deadlineParts[1].split(" ", 2)[1].strip();
-
         if (by.isEmpty()) {
-            throw new InvalidInputException("Please provide a deadline.");
+            throw new IllegalArgumentException("The deadline of a DEADLINE cannot be empty.");
         }
-
-        return new DeadlineTask(description, by);
+        DeadlineTask task = new DeadlineTask(taskDescription, isDone, by);
+        tasks.add(task);
+        return task;
     }
 
-    private Task addEventTask(String taskDescription) throws InvalidInputException {
-        String[] eventParts = taskDescription.split("/", 3);
-
-        if (eventParts[0].isEmpty()) {
-            throw new InvalidInputException("The description of a EVENT cannot be empty.");
-        } else if (eventParts.length < 3 || eventParts[1].isEmpty() || eventParts[2].isEmpty()
-                || !(eventParts[1].startsWith("from ") && eventParts[2].startsWith("to "))) {
-            throw new InvalidInputException("event [description] /from [start] /to [end]");
-        }
-
-        String description = eventParts[0].strip();
-        String from = eventParts[1].split(" ", 2)[1].strip();
-        String to = eventParts[2].split(" ", 2)[1].strip();
-
-        if (from.isEmpty() || to.isEmpty()) {
-            throw new InvalidInputException("Please provide a start and end time.");
-        }
-
-        return new EventTask(description, from, to);
+    public EventTask addEventTask(String taskDescription, String from, String to) throws IllegalArgumentException {
+        return addEventTask(taskDescription, false, from, to);
     }
 
-    public Task markTask(int index, boolean isDone) {
+    public EventTask addEventTask(String taskDescription, boolean isDone, String from, String to)
+            throws IllegalArgumentException {
+        if (taskDescription.isEmpty()) {
+            throw new IllegalArgumentException("The description of an EVENT cannot be empty.");
+        }
+        if (from.isEmpty()) {
+            throw new IllegalArgumentException("The start time of an EVENT cannot be empty.");
+        }
+        if (to.isEmpty()) {
+            throw new IllegalArgumentException("The end time of an EVENT cannot be empty.");
+        }
+        EventTask task = new EventTask(taskDescription, isDone, from, to);
+        tasks.add(task);
+        return task;
+    }
+
+    public Task markTask(int index, boolean isDone) throws IllegalArgumentException {
+        if (index < 1 || index > tasks.size()) {
+            throw new IllegalArgumentException("Index must be from 1 to " + tasks.size() + ".");
+        }
+
         Task task = tasks.get(index - 1);
         if (isDone) {
             task.markAsDone();
@@ -75,7 +69,10 @@ public class TaskList {
         return task;
     }
 
-    public Task deleteTask(int index) {
+    public Task deleteTask(int index) throws IllegalArgumentException {
+        if (index < 1 || index > tasks.size()) {
+            throw new IllegalArgumentException("Index must be from 1 to " + tasks.size() + ".");
+        }
         return tasks.remove(index - 1);
     }
 

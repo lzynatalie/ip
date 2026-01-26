@@ -74,21 +74,60 @@ public class Iris {
     }
 
     private static void addTask(TaskList taskList, TaskType taskType, String input) throws InvalidInputException {
-        if (input.isEmpty()) {
-            throw new InvalidInputException("The description of a " + taskType.name() + " cannot be empty.");
-        }
-
-        Task task;
+        Task task = null;
         switch (taskType) {
-            case TODO -> task = taskList.addTask(TaskType.TODO, input);
-            case DEADLINE -> task = taskList.addTask(TaskType.DEADLINE, input);
-            case EVENT -> task = taskList.addTask(TaskType.EVENT, input);
-            default -> task = new Task();
+            case TODO -> task = addToDoTask(taskList, input);
+            case DEADLINE -> task = addDeadlineTask(taskList, input);
+            case EVENT -> task = addEventTask(taskList, input);
         }
         System.out.println("Got it. I've added this task:\n   " + task);
 
         int numTasks = taskList.getNumTasks();
         printNumTasks(numTasks);
+    }
+
+    private static Task addToDoTask(TaskList taskList, String input) throws InvalidInputException {
+        String description = input.strip();
+        try {
+            return taskList.addToDoTask(description);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidInputException(e.getMessage());
+        }
+    }
+
+    private static Task addDeadlineTask(TaskList taskList, String input) throws InvalidInputException {
+        String[] deadlineParts = input.split("/", 2);
+
+        if (deadlineParts.length < 2 || !deadlineParts[1].startsWith("by ")) {
+            throw new InvalidInputException("Please provide a deadline.");
+        }
+
+        String description = deadlineParts[0].strip();
+        String by = deadlineParts[1].split(" ", 2)[1].strip();
+
+        try {
+            return taskList.addDeadlineTask(description, by);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidInputException(e.getMessage());
+        }
+    }
+
+    private static Task addEventTask(TaskList taskList, String input) throws InvalidInputException {
+        String[] eventParts = input.split("/", 3);
+
+        if (eventParts.length < 3 || !eventParts[1].startsWith("from ") || !eventParts[2].startsWith("to ")) {
+            throw new InvalidInputException("Please provide a start and end time.");
+        }
+
+        String description = eventParts[0].strip();
+        String from = eventParts[1].split(" ", 2)[1].strip();
+        String to = eventParts[2].split(" ", 2)[1].strip();
+
+        try {
+            return taskList.addEventTask(description, from, to);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidInputException(e.getMessage());
+        }
     }
 
     private static void markTask(TaskList taskList, String input, boolean isDone)
@@ -105,20 +144,19 @@ public class Iris {
             throw new InvalidInputException("Please provide a valid index.");
         }
 
-        if (index < 1 || index > numTasks) {
-            throw new InvalidInputException("Index must be from 1 to " + numTasks + ".");
-        }
-
-        Task task = taskList.markTask(index, isDone);
-
-        if (isDone) {
-            System.out.println("Nice! I've marked this task as done:\n   " + task);
-        } else {
-            System.out.println("OK, I've marked this task as not done yet:\n   " + task);
+        try {
+            Task task = taskList.markTask(index, isDone);
+            if (isDone) {
+                System.out.println("Nice! I've marked this task as done:\n   " + task);
+            } else {
+                System.out.println("OK, I've marked this task as not done yet:\n   " + task);
+            }
+        } catch (IllegalArgumentException e) {
+            throw new InvalidInputException(e.getMessage());
         }
     }
 
-    public static void deleteTask(TaskList taskList, String input)
+    private static void deleteTask(TaskList taskList, String input)
             throws InvalidCommandException, InvalidInputException {
         int numTasks = taskList.getNumTasks();
         if (numTasks == 0) {
