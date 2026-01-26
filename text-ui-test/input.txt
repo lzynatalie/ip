@@ -5,10 +5,10 @@ todo
 todo read book
 delete 2
 deadline
-deadline return book
+deadline /by June 6th
 deadline return book /by June 6th
 event
-event project meeting
+event /from Aug 6th 2pm /to 4pm
 event project meeting /from /to 4pm
 event project meeting /from Aug 6th 2pm /to 4pm
 list
