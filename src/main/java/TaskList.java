@@ -30,7 +30,7 @@ public class TaskList {
         if (by.isEmpty()) {
             throw new IllegalArgumentException("The deadline of a DEADLINE cannot be empty.");
         }
-        DeadlineTask task = new DeadlineTask(taskDescription, isDone, by);
+        DeadlineTask task = new DeadlineTask(taskDescription, isDone, StringFormatter.toLocalDateTime(by));
         tasks.add(task);
         return task;
     }
@@ -50,7 +50,8 @@ public class TaskList {
         if (to.isEmpty()) {
             throw new IllegalArgumentException("The end time of an EVENT cannot be empty.");
         }
-        EventTask task = new EventTask(taskDescription, isDone, from, to);
+        EventTask task = new EventTask(taskDescription, isDone,
+                StringFormatter.toLocalDateTime(from), StringFormatter.toLocalDateTime(to));
         tasks.add(task);
         return task;
     }
@@ -80,10 +81,10 @@ public class TaskList {
         return tasks.size();
     }
 
-    public String toSaveFileFormat() {
+    public String toSaveDataFormat() {
         String string = "";
         for (int i = 0; i < tasks.size(); i++) {
-            string = string.concat(tasks.get(i).toSaveFileFormat() + "\n");
+            string = string.concat(tasks.get(i).toSaveDataFormat() + "\n");
         }
         return string;
     }

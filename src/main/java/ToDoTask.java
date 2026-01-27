@@ -9,7 +9,7 @@ public class ToDoTask extends Task {
     }
 
     @Override
-    public String toSaveFileFormat() {
+    public String toSaveDataFormat() {
         String status = super.isDone() ? "1" : "0";
         return "T | " + status + " | " + super.getDescription();
     }

@@ -57,9 +57,9 @@ public class Iris {
             default -> throw new InvalidCommandException();
         }
 
-        String saveFileContent = taskList.toSaveFileFormat();
+        String saveData = taskList.toSaveDataFormat();
         try {
-            Files.writeString(filePath, saveFileContent);
+            Files.writeString(filePath, saveData);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
