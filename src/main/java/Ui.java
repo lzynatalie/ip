@@ -31,6 +31,14 @@ public class Ui {
         System.out.println(errorMessage);
     }
 
+    public void showLoadingError() {
+        showError("Oops, failed to load tasks.");
+    }
+
+    public void showSavingError() {
+        showError("Oops, failed to save tasks.");
+    }
+
     public void showHorizontalLine() {
         for (int i = 0; i < 80; i++) {
             System.out.print("⸻");

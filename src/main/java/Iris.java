@@ -1,19 +1,22 @@
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Scanner;
 
 public class Iris {
+    private Storage storage;
+    private TaskList taskList;
     private Ui ui;
 
-    public Iris() {
+    public Iris(String filePath) {
         ui = new Ui();
+        storage = new Storage(filePath);
+        try {
+            taskList = new TaskList(storage.load());
+        } catch (IOException e) {
+            ui.showLoadingError();
+            taskList = new TaskList();
+        }
     }
 
     public void run() {
-        Path filePath = Path.of("./data/iris.txt");
-        TaskList taskList = initialiseTaskList(filePath);
-
         ui.showWelcome();
 
         String userInput = ui.readCommand();
@@ -30,7 +33,7 @@ public class Iris {
             }
 
             try {
-                handleCommand(filePath, taskList, command, input);
+                handleCommand(command, input);
             } catch (InvalidCommandException | InvalidInputException e) {
                 ui.showError(e.getMessage());
             }
@@ -42,10 +45,10 @@ public class Iris {
     }
 
     public static void main(String[] args) {
-        new Iris().run();
+        new Iris("./data/iris.txt").run();
     }
 
-    private void handleCommand(Path filePath, TaskList taskList, String command, String input)
+    private void handleCommand(String command, String input)
             throws InvalidCommandException, InvalidInputException {
         switch (command) {
             case "list" -> listTasks(taskList);
@@ -59,11 +62,10 @@ public class Iris {
             default -> throw new InvalidCommandException();
         }
 
-        String saveData = taskList.toSaveDataFormat();
         try {
-            Files.writeString(filePath, saveData);
+            storage.store(taskList.asList());
         } catch (IOException e) {
-            ui.showError("An error has occurred: " + e.getMessage());
+            ui.showSavingError();
         }
     }
 
@@ -181,45 +183,5 @@ public class Iris {
                 ? "Now you have 1 task in the list."
                 : "Now you have " + numTasks + " tasks in the list.";
         ui.showMessage(message);
-    }
-
-    private TaskList initialiseTaskList(Path filePath) {
-        Path directoryPath = filePath.getParent();
-        TaskList taskList = new TaskList();
-
-        if (!Files.exists(directoryPath)) {
-            try {
-                Files.createDirectories(filePath.getParent());
-            } catch (IOException e) {
-                ui.showError("An error has occurred: " + e.getMessage());
-            }
-        }
-
-        if (!Files.exists(filePath)) {
-            try {
-                Files.createFile(filePath);
-            } catch (IOException e) {
-                ui.showError("An error has occurred: " + e.getMessage());
-            }
-            return taskList;
-        }
-
-        try {
-            Scanner fileReader = new Scanner(filePath);
-            while (fileReader.hasNext()) {
-                String task = fileReader.nextLine();
-                String[] taskParts = task.split(" \\| ");
-                boolean isDone = taskParts[1].equals("1");
-                switch (taskParts[0]) {
-                    case "T" -> taskList.addToDoTask(taskParts[2], isDone);
-                    case "D" -> taskList.addDeadlineTask(taskParts[2], isDone, taskParts[3]);
-                    case "E" -> taskList.addEventTask(taskParts[2], isDone, taskParts[3], taskParts[4]);
-                }
-            }
-        } catch (IOException e) {
-            ui.showError("An error has occurred: " + e.getMessage());
-        }
-
-        return taskList;
     }
 }

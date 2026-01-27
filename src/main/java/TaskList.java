@@ -1,9 +1,16 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskList {
-    private ArrayList<Task> tasks = new ArrayList<>();
+    private ArrayList<Task> tasks;
 
-    public TaskList() {}
+    public TaskList(List<Task> tasks) {
+        this.tasks = new ArrayList<>(tasks);
+    }
+
+    public TaskList() {
+        this.tasks = new ArrayList<>();
+    }
 
     public ToDoTask addToDoTask(String taskDescription) throws IllegalArgumentException {
         return addToDoTask(taskDescription, false);
@@ -101,12 +108,8 @@ public class TaskList {
         return tasks.size();
     }
 
-    public String toSaveDataFormat() {
-        String string = "";
-        for (Task task : tasks) {
-            string = string.concat(task.toSaveDataFormat() + "\n");
-        }
-        return string;
+    public List<Task> asList() {
+        return tasks;
     }
 
     @Override
