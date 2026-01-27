@@ -20,7 +20,6 @@ public class Ui {
 
     public void showGoodbye() {
         System.out.println("Bye. Hope to see you again soon!");
-        showHorizontalLine();
     }
 
     public void showMessage(String message) {
@@ -29,14 +28,6 @@ public class Ui {
 
     public void showError(String errorMessage) {
         System.out.println(errorMessage);
-    }
-
-    public void showLoadingError() {
-        showError("Oops, failed to load tasks.");
-    }
-
-    public void showSavingError() {
-        showError("Oops, failed to save tasks.");
     }
 
     public void showHorizontalLine() {

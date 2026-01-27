@@ -12,14 +12,27 @@ public class Storage {
         this.filePath = Path.of(filePath);
     }
 
-    public List<Task> load() throws IOException {
+    public List<Task> load() throws IrisException {
         ArrayList<Task> tasks = new ArrayList<>();
 
-        if (createFile()) {
+        boolean fileCreated;
+        try {
+            fileCreated = createFile();
+        } catch (IOException e) {
+            throw new IrisException("Oops, failed to load tasks.");
+        }
+
+        if (fileCreated) {
             return tasks;
         }
 
-        Scanner fileReader = new Scanner(filePath);
+        Scanner fileReader;
+        try {
+            fileReader = new Scanner(filePath);
+        } catch (IOException e) {
+            throw new IrisException("Oops, failed to load tasks.");
+        }
+
         while (fileReader.hasNext()) {
             String task = fileReader.nextLine();
             String[] taskParts = task.split(" \\| ");
@@ -37,12 +50,16 @@ public class Storage {
         return tasks;
     }
 
-    public void store(List<Task> tasks) throws IOException {
+    public void store(List<Task> tasks) throws IrisException {
         String saveContent = "";
         for (Task task : tasks) {
             saveContent = saveContent.concat(task.toSaveDataFormat() + "\n");
         }
-        Files.writeString(filePath, saveContent);
+        try {
+            Files.writeString(filePath, saveContent);
+        } catch (IOException e) {
+            throw new IrisException("Oops, failed to save tasks.");
+        }
     }
 
     public boolean createFile() throws IOException {
