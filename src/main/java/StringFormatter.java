@@ -14,12 +14,12 @@ public class StringFormatter {
         return localDateTime.format(dateTimeFormatter);
     }
 
-    public static LocalDateTime toLocalDateTime(String dateTime) throws IllegalArgumentException {
+    public static LocalDateTime toLocalDateTime(String dateTime) throws InvalidInputException {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         try {
-            return LocalDateTime.parse(dateTime, dateTimeFormatter);
+            return LocalDateTime.parse(dateTime.strip(), dateTimeFormatter);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Date and time must be in yyyy-MM-dd HH:mm format");
+            throw new InvalidInputException("Date and time must be in yyyy-MM-dd HH:mm format");
         }
     }
 }
