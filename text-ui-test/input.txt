@@ -1,26 +1,40 @@
 list
 mark
+mark 1
+unmark
+unmark 1
 delete
+delete 1
 todo
 todo read book
+mark 2
+unmark 2
 delete 2
 deadline
 deadline /by June 6th
 deadline return book /by June 6th
 deadline return book /by 2025-06-06 00:00
+mark 3
+unmark 3
+delete 3
 event
 event /from Aug 6th 2pm /to 4pm
 event project meeting /from /to 4pm
 event project meeting /from Aug 6th 2pm /to 4pm
 event project meeting /from 2025-08-06 14:00 /to 2025-08-06 16:00
 list
+mark a
+unmark a
+delete a
 mark 1
-mark abc
-mark 4
+mark 1
 todo join sports club
-mark 4
+mark 2
+unmark 1
 unmark 1
 delete 3
 blah
 list
+clear
+clear
 bye

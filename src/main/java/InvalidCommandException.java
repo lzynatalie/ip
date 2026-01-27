@@ -4,6 +4,6 @@ public class InvalidCommandException extends IrisException {
     }
 
     public InvalidCommandException(String message) {
-        super("Invalid command: " + message);
+        super(message);
     }
 }

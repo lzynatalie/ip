@@ -54,6 +54,7 @@ public class Iris {
             case "deadline" -> addTask(taskList, TaskType.DEADLINE, input);
             case "event" -> addTask(taskList, TaskType.EVENT, input);
             case "delete" -> deleteTask(taskList, input);
+            case "clear" -> clearTasks(taskList);
             default -> throw new InvalidCommandException();
         }
 
@@ -81,9 +82,7 @@ public class Iris {
             case EVENT -> task = addEventTask(taskList, input);
         }
         System.out.println("Got it. I've added this task:\n   " + task);
-
-        int numTasks = taskList.getNumTasks();
-        printNumTasks(numTasks);
+        printNumTasks(taskList);
     }
 
     private static Task addToDoTask(TaskList taskList, String input) throws InvalidInputException {
@@ -132,11 +131,6 @@ public class Iris {
 
     private static void markTask(TaskList taskList, String input, boolean isDone)
             throws InvalidCommandException, InvalidInputException {
-        int numTasks = taskList.getNumTasks();
-        if (numTasks == 0) {
-            throw new InvalidCommandException("There are no tasks right now.");
-        }
-
         int index;
         try {
             index = Integer.parseInt(input);
@@ -158,11 +152,6 @@ public class Iris {
 
     private static void deleteTask(TaskList taskList, String input)
             throws InvalidCommandException, InvalidInputException {
-        int numTasks = taskList.getNumTasks();
-        if (numTasks == 0) {
-            throw new InvalidCommandException("There are no tasks right now.");
-        }
-
         int index;
         try {
             index = Integer.parseInt(input);
@@ -177,10 +166,16 @@ public class Iris {
             throw new InvalidInputException(e.getMessage());
         }
 
-        printNumTasks(numTasks - 1);
+        printNumTasks(taskList);
     }
 
-    private static void printNumTasks(int numTasks) {
+    private static void clearTasks(TaskList taskList) throws InvalidCommandException {
+        taskList.clearTasks();
+        System.out.println("Cleared! There are no more tasks in the list.");
+    }
+
+    private static void printNumTasks(TaskList taskList) {
+        int numTasks = taskList.getNumTasks();
         String message = numTasks == 1
                 ? "Now you have 1 task in the list."
                 : "Now you have " + numTasks + " tasks in the list.";
