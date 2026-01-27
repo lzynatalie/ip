@@ -4,22 +4,19 @@ import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Iris {
-    public static final String CHATBOT_NAME = "Iris";
-    public static final String HORIZONTAL_LINE = "⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻";
+    private Ui ui;
 
-    public static void main(String[] args) {
-        String welcomeMessage = HORIZONTAL_LINE + "\n"
-                + "Hello! I'm " + CHATBOT_NAME + ".\n"
-                + "What can I do for you?\n"
-                + HORIZONTAL_LINE;
-        String goodbyeMessage = "Bye. Hope to see you again soon!\n"
-                + HORIZONTAL_LINE;
-        Scanner scanner = new Scanner(System.in);
+    public Iris() {
+        ui = new Ui();
+    }
+
+    public void run() {
         Path filePath = Path.of("./data/iris.txt");
         TaskList taskList = initialiseTaskList(filePath);
 
-        System.out.println(welcomeMessage);
-        String userInput = scanner.nextLine();
+        ui.showWelcome();
+
+        String userInput = ui.readCommand();
         while (true) {
             String[] strings = userInput.split(" ", 2);
             String command = strings[0];
@@ -35,16 +32,20 @@ public class Iris {
             try {
                 handleCommand(filePath, taskList, command, input);
             } catch (InvalidCommandException | InvalidInputException e) {
-                System.out.println(e.getMessage());
+                ui.showError(e.getMessage());
             }
 
-            System.out.println(HORIZONTAL_LINE);
-            userInput = scanner.nextLine();
+            ui.showHorizontalLine();
+            userInput = ui.readCommand();
         }
-        System.out.println(goodbyeMessage);
+        ui.showGoodbye();
     }
 
-    private static void handleCommand(Path filePath, TaskList taskList, String command, String input)
+    public static void main(String[] args) {
+        new Iris().run();
+    }
+
+    private void handleCommand(Path filePath, TaskList taskList, String command, String input)
             throws InvalidCommandException, InvalidInputException {
         switch (command) {
             case "list" -> listTasks(taskList);
@@ -62,30 +63,30 @@ public class Iris {
         try {
             Files.writeString(filePath, saveData);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            ui.showError("An error has occurred: " + e.getMessage());
         }
     }
 
-    private static void listTasks(TaskList taskList) throws InvalidCommandException {
+    private void listTasks(TaskList taskList) throws InvalidCommandException {
         int numTasks = taskList.getNumTasks();
         if (numTasks == 0) {
             throw new InvalidCommandException("There are no tasks right now.");
         }
-        System.out.println("Here are the tasks in your list:\n" + taskList);
+        ui.showMessage("Here are the tasks in your list:\n" + taskList);
     }
 
-    private static void addTask(TaskList taskList, TaskType taskType, String input) throws InvalidInputException {
+    private void addTask(TaskList taskList, TaskType taskType, String input) throws InvalidInputException {
         Task task = null;
         switch (taskType) {
             case TODO -> task = addToDoTask(taskList, input);
             case DEADLINE -> task = addDeadlineTask(taskList, input);
             case EVENT -> task = addEventTask(taskList, input);
         }
-        System.out.println("Got it. I've added this task:\n   " + task);
+        ui.showMessage("Got it. I've added this task:\n   " + task);
         printNumTasks(taskList);
     }
 
-    private static Task addToDoTask(TaskList taskList, String input) throws InvalidInputException {
+    private Task addToDoTask(TaskList taskList, String input) throws InvalidInputException {
         String description = input.strip();
         try {
             return taskList.addToDoTask(description);
@@ -94,7 +95,7 @@ public class Iris {
         }
     }
 
-    private static Task addDeadlineTask(TaskList taskList, String input) throws InvalidInputException {
+    private Task addDeadlineTask(TaskList taskList, String input) throws InvalidInputException {
         String[] deadlineParts = input.split("/", 2);
 
         if (deadlineParts.length < 2 || !deadlineParts[1].startsWith("by ")) {
@@ -111,7 +112,7 @@ public class Iris {
         }
     }
 
-    private static Task addEventTask(TaskList taskList, String input) throws InvalidInputException {
+    private Task addEventTask(TaskList taskList, String input) throws InvalidInputException {
         String[] eventParts = input.split("/", 3);
 
         if (eventParts.length < 3 || !eventParts[1].startsWith("from ") || !eventParts[2].startsWith("to ")) {
@@ -129,7 +130,7 @@ public class Iris {
         }
     }
 
-    private static void markTask(TaskList taskList, String input, boolean isDone)
+    private void markTask(TaskList taskList, String input, boolean isDone)
             throws InvalidCommandException, InvalidInputException {
         int index;
         try {
@@ -141,16 +142,16 @@ public class Iris {
         try {
             Task task = taskList.markTask(index, isDone);
             if (isDone) {
-                System.out.println("Nice! I've marked this task as done:\n   " + task);
+                ui.showMessage("Nice! I've marked this task as done:\n   " + task);
             } else {
-                System.out.println("OK, I've marked this task as not done yet:\n   " + task);
+                ui.showMessage("OK, I've marked this task as not done yet:\n   " + task);
             }
         } catch (IllegalArgumentException e) {
             throw new InvalidInputException(e.getMessage());
         }
     }
 
-    private static void deleteTask(TaskList taskList, String input)
+    private void deleteTask(TaskList taskList, String input)
             throws InvalidCommandException, InvalidInputException {
         int index;
         try {
@@ -161,7 +162,7 @@ public class Iris {
 
         try {
             Task task = taskList.deleteTask(index);
-            System.out.println("Noted. I've removed this task:\n   " + task);
+            ui.showMessage("Noted. I've removed this task:\n   " + task);
         } catch (IllegalArgumentException e) {
             throw new InvalidInputException(e.getMessage());
         }
@@ -169,20 +170,20 @@ public class Iris {
         printNumTasks(taskList);
     }
 
-    private static void clearTasks(TaskList taskList) throws InvalidCommandException {
+    private void clearTasks(TaskList taskList) throws InvalidCommandException {
         taskList.clearTasks();
-        System.out.println("Cleared! There are no more tasks in the list.");
+        ui.showMessage("Cleared! There are no more tasks in the list.");
     }
 
-    private static void printNumTasks(TaskList taskList) {
+    private void printNumTasks(TaskList taskList) {
         int numTasks = taskList.getNumTasks();
         String message = numTasks == 1
                 ? "Now you have 1 task in the list."
                 : "Now you have " + numTasks + " tasks in the list.";
-        System.out.println(message);
+        ui.showMessage(message);
     }
 
-    private static TaskList initialiseTaskList(Path filePath) {
+    private TaskList initialiseTaskList(Path filePath) {
         Path directoryPath = filePath.getParent();
         TaskList taskList = new TaskList();
 
@@ -190,7 +191,7 @@ public class Iris {
             try {
                 Files.createDirectories(filePath.getParent());
             } catch (IOException e) {
-                System.out.println("An error has occurred: " + e.getMessage());;
+                ui.showError("An error has occurred: " + e.getMessage());
             }
         }
 
@@ -198,7 +199,7 @@ public class Iris {
             try {
                 Files.createFile(filePath);
             } catch (IOException e) {
-                System.out.println("An error has occurred: " + e.getMessage());;
+                ui.showError("An error has occurred: " + e.getMessage());
             }
             return taskList;
         }
@@ -216,7 +217,7 @@ public class Iris {
                 }
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            ui.showError("An error has occurred: " + e.getMessage());
         }
 
         return taskList;
