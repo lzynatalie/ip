@@ -29,4 +29,19 @@ public class DeadlineCommand extends Command {
 
         ui.showMessage("Got it. I've added this task:\n   " + task + "\n" + taskList.toTaskCountFormat());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        DeadlineCommand command = (DeadlineCommand) obj;
+
+        return command.description.equals(this.description) && command.by.equals(this.by);
+    }
 }
