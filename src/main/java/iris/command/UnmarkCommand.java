@@ -1,3 +1,10 @@
+package iris.command;
+
+import iris.*;
+import iris.exception.InvalidCommandException;
+import iris.exception.IrisException;
+import iris.task.Task;
+
 public class UnmarkCommand extends Command {
     private int index;
 

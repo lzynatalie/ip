@@ -1,3 +1,7 @@
+package iris.task;
+
+import iris.StringFormatter;
+
 import java.time.LocalDateTime;
 
 public class DeadlineTask extends Task {

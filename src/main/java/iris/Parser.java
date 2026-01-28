@@ -1,3 +1,8 @@
+package iris;
+
+import iris.command.*;
+import iris.exception.InvalidInputException;
+
 public class Parser {
 
     public static Command parse(String fullCommand) throws InvalidInputException {
