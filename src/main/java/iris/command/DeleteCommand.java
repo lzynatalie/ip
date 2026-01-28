@@ -1,3 +1,10 @@
+package iris.command;
+
+import iris.*;
+import iris.exception.InvalidCommandException;
+import iris.exception.IrisException;
+import iris.task.Task;
+
 public class DeleteCommand extends Command {
     private int index;
 

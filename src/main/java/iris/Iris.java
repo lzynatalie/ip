@@ -1,3 +1,8 @@
+package iris;
+
+import iris.command.Command;
+import iris.exception.IrisException;
+
 public class Iris {
     private Storage storage;
     private TaskList taskList;

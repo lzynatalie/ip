@@ -1,3 +1,10 @@
+package iris.command;
+
+import iris.exception.InvalidCommandException;
+import iris.Storage;
+import iris.TaskList;
+import iris.Ui;
+
 public class UnknownCommand extends Command {
 
     public UnknownCommand() {}

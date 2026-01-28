@@ -1,3 +1,11 @@
+package iris;
+
+import iris.exception.IrisException;
+import iris.task.DeadlineTask;
+import iris.task.EventTask;
+import iris.task.Task;
+import iris.task.ToDoTask;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

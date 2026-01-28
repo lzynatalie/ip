@@ -1,3 +1,10 @@
+package iris.command;
+
+import iris.*;
+import iris.exception.InvalidInputException;
+import iris.exception.IrisException;
+import iris.task.EventTask;
+
 public class EventCommand extends Command {
     private String description;
     private String from;

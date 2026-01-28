@@ -1,3 +1,10 @@
+package iris.command;
+
+import iris.*;
+import iris.exception.InvalidInputException;
+import iris.exception.IrisException;
+import iris.task.ToDoTask;
+
 public class ToDoCommand extends Command {
     private String description;
 

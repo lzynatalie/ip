@@ -1,3 +1,9 @@
+package iris.command;
+
+import iris.*;
+import iris.exception.InvalidCommandException;
+import iris.exception.IrisException;
+
 public class ClearCommand extends Command {
 
     public ClearCommand() {}

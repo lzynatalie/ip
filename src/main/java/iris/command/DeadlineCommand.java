@@ -1,3 +1,10 @@
+package iris.command;
+
+import iris.*;
+import iris.exception.InvalidInputException;
+import iris.exception.IrisException;
+import iris.task.DeadlineTask;
+
 public class DeadlineCommand extends Command {
     private String description;
     private String by;
