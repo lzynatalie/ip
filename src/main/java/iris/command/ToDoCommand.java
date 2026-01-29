@@ -5,6 +5,9 @@ import iris.exception.InvalidInputException;
 import iris.exception.IrisException;
 import iris.task.ToDoTask;
 
+/**
+ * Represents a command to add a to-do task to the task list.
+ */
 public class ToDoCommand extends Command {
     private String description;
 

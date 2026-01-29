@@ -1,5 +1,8 @@
 package iris.task;
 
+/**
+ * Represents a task to be done.
+ */
 public abstract class Task {
     private String description;
     private boolean isDone;

@@ -4,6 +4,9 @@ import iris.*;
 import iris.exception.InvalidCommandException;
 import iris.exception.IrisException;
 
+/**
+ * Represents a command to clear the task list.
+ */
 public class ClearCommand extends Command {
 
     public ClearCommand() {}

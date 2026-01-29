@@ -1,5 +1,8 @@
 package iris.task;
 
+/**
+ * A task without any date/time attached to it.
+ */
 public class ToDoTask extends Task {
 
     public ToDoTask(String description, boolean isDone) {

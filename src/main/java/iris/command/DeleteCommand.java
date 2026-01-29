@@ -5,6 +5,9 @@ import iris.exception.InvalidCommandException;
 import iris.exception.IrisException;
 import iris.task.Task;
 
+/**
+ * Represents a command to delete a task from the task list.
+ */
 public class DeleteCommand extends Command {
     private int index;
 

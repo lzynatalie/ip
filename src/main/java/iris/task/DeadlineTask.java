@@ -4,6 +4,9 @@ import iris.StringFormatter;
 
 import java.time.LocalDateTime;
 
+/**
+ * A task that needs to be done before a specific date/time.
+ */
 public class DeadlineTask extends Task {
     private LocalDateTime by;
 

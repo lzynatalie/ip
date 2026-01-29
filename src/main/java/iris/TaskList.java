@@ -6,6 +6,11 @@ import iris.task.Task;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An object used to manage a list of tasks.
+ * <br>
+ * This class provides methods to perform task operations.
+ */
 public class TaskList {
     private ArrayList<Task> tasks;
 
@@ -17,10 +22,22 @@ public class TaskList {
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Adds task to this task list.
+     *
+     * @param task Task to be added.
+     */
     public void addTask(Task task) {
         tasks.add(task);
     }
 
+    /**
+     * Deletes task from this task list.
+     *
+     * @param index Index of task to be deleted.
+     * @return Task that was deleted.
+     * @throws InvalidInputException
+     */
     public Task deleteTask(int index) throws InvalidInputException {
         if (index < 1 || index > tasks.size()) {
             throw new InvalidInputException("Index must be from 1 to " + tasks.size() + ".");
@@ -28,10 +45,20 @@ public class TaskList {
         return tasks.remove(index - 1);
     }
 
+    /**
+     * Clears this task list.
+     */
     public void clearTasks() {
         tasks.clear();
     }
 
+    /**
+     * Retrieves a task from this task list.
+     *
+     * @param index Index of task to be retrieved.
+     * @return Task that was retrieved.
+     * @throws InvalidInputException
+     */
     public Task getTask(int index) throws InvalidInputException {
         if (index < 1 || index > tasks.size()) {
             throw new InvalidInputException("Index must be from 1 to " + tasks.size() + ".");
@@ -39,14 +66,29 @@ public class TaskList {
         return tasks.get(index - 1);
     }
 
+    /**
+     * Returns the number of tasks in this task list.
+     *
+     * @return Number of tasks in the list.
+     */
     public int getNumTasks() {
         return tasks.size();
     }
 
+    /**
+     * Returns this task list as a List.
+     *
+     * @return List<Task> object.
+     */
     public List<Task> asList() {
         return tasks;
     }
 
+    /**
+     * Returns this task count in sentence format.
+     *
+     * @return Task count string.
+     */
     public String toTaskCountFormat() {
         int numTasks = tasks.size();
         return numTasks == 1
