@@ -29,6 +29,7 @@ public class Parser {
             case "deadline" -> parseDeadline(input);
             case "event" -> parseEvent(input);
             case "delete" -> new DeleteCommand(parseIndex(input));
+            case "find" -> new FindCommand(parseDescription(input));
             case "clear" -> new ClearCommand();
             default -> new UnknownCommand();
         };

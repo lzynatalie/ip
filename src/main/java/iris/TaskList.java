@@ -53,6 +53,22 @@ public class TaskList {
     }
 
     /**
+     * Returns all tasks in this task list which match the given description.
+     *
+     * @param description Task description string.
+     * @return TaskList containing matching tasks.
+     */
+    public TaskList findTasks(String description) {
+        TaskList matchingTasks = new TaskList();
+        for (Task task : tasks) {
+            if (task.getDescription().contains(description)) {
+                matchingTasks.addTask(task);
+            }
+        }
+        return matchingTasks;
+    }
+
+    /**
      * Retrieves a task from this task list.
      *
      * @param index Index of task to be retrieved.
