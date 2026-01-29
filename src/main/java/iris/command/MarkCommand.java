@@ -5,6 +5,9 @@ import iris.exception.InvalidCommandException;
 import iris.exception.IrisException;
 import iris.task.Task;
 
+/**
+ * Represents a command to mark a task from the task list as complete.
+ */
 public class MarkCommand extends Command {
     private int index;
 

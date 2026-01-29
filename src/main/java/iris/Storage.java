@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * An object used to read and write tasks to a file.
+ */
 public class Storage {
     private Path filePath;
 
@@ -20,6 +23,12 @@ public class Storage {
         this.filePath = Path.of(filePath);
     }
 
+    /**
+     * Loads tasks from hard disk.
+     *
+     * @return List of tasks.
+     * @throws IrisException
+     */
     public List<Task> load() throws IrisException {
         ArrayList<Task> tasks = new ArrayList<>();
 
@@ -58,6 +67,12 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Stores tasks onto hard disk.
+     *
+     * @param tasks List of tasks.
+     * @throws IrisException
+     */
     public void store(List<Task> tasks) throws IrisException {
         String saveContent = "";
         for (Task task : tasks) {
@@ -70,7 +85,7 @@ public class Storage {
         }
     }
 
-    public boolean createFile() throws IOException {
+    private boolean createFile() throws IOException {
         Path directoryPath = filePath.getParent();
         if (!Files.exists(directoryPath)) {
             Files.createDirectories(filePath.getParent());

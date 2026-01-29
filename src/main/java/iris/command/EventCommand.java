@@ -5,6 +5,9 @@ import iris.exception.InvalidInputException;
 import iris.exception.IrisException;
 import iris.task.EventTask;
 
+/**
+ * Represents a command to add an event task to the task list.
+ */
 public class EventCommand extends Command {
     private String description;
     private String from;

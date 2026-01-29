@@ -2,6 +2,11 @@ package iris;
 
 import java.util.Scanner;
 
+/**
+ * An object used to interact with the user.
+ * <br>
+ * This class provides methods to read user input and display program outputs.
+ */
 public class Ui {
     public static final String CHATBOT_NAME = "Iris";
     private Scanner scanner;

@@ -4,6 +4,9 @@ import iris.Storage;
 import iris.TaskList;
 import iris.Ui;
 
+/**
+ * Represents a command to exit the program.
+ */
 public class ExitCommand extends Command {
 
     public ExitCommand() {}

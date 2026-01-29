@@ -5,6 +5,9 @@ import iris.exception.InvalidInputException;
 import iris.exception.IrisException;
 import iris.task.DeadlineTask;
 
+/**
+ * Represents a command to add a deadline task to the task list.
+ */
 public class DeadlineCommand extends Command {
     private String description;
     private String by;

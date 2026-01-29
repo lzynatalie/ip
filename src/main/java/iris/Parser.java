@@ -3,8 +3,18 @@ package iris;
 import iris.command.*;
 import iris.exception.InvalidInputException;
 
+/**
+ * This class provides a single static method to parse user commands.
+ */
 public class Parser {
 
+    /**
+     * Parses command input by the user.
+     *
+     * @param fullCommand Full command string.
+     * @return Command to execute.
+     * @throws InvalidInputException
+     */
     public static Command parse(String fullCommand) throws InvalidInputException {
         String[] inputs = fullCommand.split(" ", 2);
         String command = inputs[0];

@@ -5,8 +5,19 @@ import iris.Storage;
 import iris.TaskList;
 import iris.Ui;
 
+/**
+ * Represents an executable user command.
+ */
 public abstract class Command {
 
+    /**
+     * Executes this command.
+     *
+     * @param taskList Task list to perform task operations on.
+     * @param ui Ui object to display outputs.
+     * @param storage Storage object to store tasks.
+     * @throws IrisException
+     */
     public abstract void execute(TaskList taskList, Ui ui, Storage storage) throws IrisException;
 
     public boolean isExit() {

@@ -5,6 +5,9 @@ import iris.Storage;
 import iris.TaskList;
 import iris.Ui;
 
+/**
+ * Represents a command that does not exist in the program.
+ */
 public class UnknownCommand extends Command {
 
     public UnknownCommand() {}

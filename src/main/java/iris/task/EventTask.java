@@ -4,6 +4,9 @@ import iris.StringFormatter;
 
 import java.time.LocalDateTime;
 
+/**
+ * A task that starts at a specific date/time and ends at a specific date/time.
+ */
 public class EventTask extends Task {
     private LocalDateTime from;
     private LocalDateTime to;
