@@ -1,11 +1,12 @@
 package iris;
 
-import iris.command.DeadlineCommand;
-import iris.exception.InvalidInputException;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
+
+import iris.command.DeadlineCommand;
+import iris.exception.InvalidInputException;
 
 public class ParserTest {
 

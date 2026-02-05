@@ -1,9 +1,9 @@
 package iris.command;
 
-import iris.exception.IrisException;
 import iris.Storage;
 import iris.TaskList;
 import iris.Ui;
+import iris.exception.IrisException;
 
 /**
  * Represents an executable user command.

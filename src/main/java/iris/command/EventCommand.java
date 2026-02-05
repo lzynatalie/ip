@@ -1,6 +1,9 @@
 package iris.command;
 
-import iris.*;
+import iris.Storage;
+import iris.StringFormatter;
+import iris.TaskList;
+import iris.Ui;
 import iris.exception.InvalidInputException;
 import iris.exception.IrisException;
 import iris.task.EventTask;

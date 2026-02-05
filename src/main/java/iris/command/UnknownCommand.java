@@ -1,9 +1,9 @@
 package iris.command;
 
-import iris.exception.InvalidCommandException;
 import iris.Storage;
 import iris.TaskList;
 import iris.Ui;
+import iris.exception.InvalidCommandException;
 
 /**
  * Represents a command that does not exist in the program.

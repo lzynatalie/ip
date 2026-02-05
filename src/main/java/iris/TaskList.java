@@ -1,10 +1,10 @@
 package iris;
 
-import iris.exception.InvalidInputException;
-import iris.task.Task;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import iris.exception.InvalidInputException;
+import iris.task.Task;
 
 /**
  * An object used to manage a list of tasks.
@@ -94,7 +94,7 @@ public class TaskList {
     /**
      * Returns this task list as a List.
      *
-     * @return List<Task> object.
+     * @return List object.
      */
     public List<Task> asList() {
         return tasks;

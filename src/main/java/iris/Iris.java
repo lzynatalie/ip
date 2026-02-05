@@ -3,6 +3,9 @@ package iris;
 import iris.command.Command;
 import iris.exception.IrisException;
 
+/**
+ * Iris is the main class used to run the program.
+ */
 public class Iris {
     private Storage storage;
     private TaskList taskList;

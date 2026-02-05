@@ -1,10 +1,10 @@
 package iris;
 
-import iris.exception.InvalidInputException;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import iris.exception.InvalidInputException;
 
 /**
  * This class provides static methods to convert objects to strings and vice versa.
