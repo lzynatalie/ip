@@ -4,12 +4,14 @@ import iris.command.Command;
 import iris.exception.IrisException;
 
 /**
- * Iris is the main class used to run the program.
+ * Represents the program logic.
  */
 public class Iris {
     private Storage storage;
     private TaskList taskList;
     private Ui ui;
+
+    public Iris() {}
 
     /**
      * Initialises an Iris object using the given file path.
@@ -50,5 +52,12 @@ public class Iris {
 
     public static void main(String[] args) {
         new Iris("./data/iris.txt").run();
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Iris heard: " + input;
     }
 }
