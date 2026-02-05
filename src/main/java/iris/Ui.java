@@ -19,6 +19,9 @@ public class Ui {
         return scanner.nextLine();
     }
 
+    /**
+     * Displays the welcome message.
+     */
     public void showWelcome() {
         showHorizontalLine();
         System.out.printf("Hello! I'm %s.\nWhat can I do for you?\n", CHATBOT_NAME);
@@ -37,6 +40,9 @@ public class Ui {
         System.out.println(errorMessage);
     }
 
+    /**
+     * Displays a horizontal line.
+     */
     public void showHorizontalLine() {
         for (int i = 0; i < 80; i++) {
             System.out.print("⸻");

@@ -11,6 +11,14 @@ public class EventTask extends Task {
     private LocalDateTime from;
     private LocalDateTime to;
 
+    /**
+     * Initialises an event task.
+     *
+     * @param description Description of this task.
+     * @param isDone Completion status of this task.
+     * @param from Start time of this task.
+     * @param to End time of this task.
+     */
     public EventTask(String description, boolean isDone, LocalDateTime from, LocalDateTime to) {
         super(description, isDone);
         this.from = from;

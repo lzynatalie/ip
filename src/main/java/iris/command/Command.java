@@ -18,7 +18,11 @@ public abstract class Command {
      * @param storage Storage object to store tasks.
      * @throws IrisException
      */
-    public abstract void execute(TaskList taskList, Ui ui, Storage storage) throws IrisException;
+    public void execute(TaskList taskList, Ui ui, Storage storage) throws IrisException {
+        ui.showMessage(execute(taskList, storage));
+    }
+
+    public abstract String execute(TaskList taskList, Storage storage) throws IrisException;
 
     public boolean isExit() {
         return false;

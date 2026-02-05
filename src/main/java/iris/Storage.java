@@ -61,6 +61,7 @@ public class Storage {
             case "E" -> tasks.add(new EventTask(taskParts[2], isDone,
                     StringFormatter.toLocalDateTime(taskParts[3]),
                     StringFormatter.toLocalDateTime(taskParts[4])));
+            default -> throw new IrisException("Unknown task type");
             }
         }
 

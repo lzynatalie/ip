@@ -2,7 +2,6 @@ package iris.command;
 
 import iris.Storage;
 import iris.TaskList;
-import iris.Ui;
 import iris.exception.InvalidCommandException;
 import iris.exception.IrisException;
 import iris.task.Task;
@@ -18,7 +17,7 @@ public class DeleteCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws IrisException {
+    public String execute(TaskList taskList, Storage storage) throws IrisException {
         if (taskList.getNumTasks() == 0) {
             throw new InvalidCommandException("There are no tasks right now.");
         }
@@ -26,6 +25,6 @@ public class DeleteCommand extends Command {
         Task task = taskList.deleteTask(index);
         storage.store(taskList.asList());
 
-        ui.showMessage("Noted. I've removed this task:\n   " + task + "\n" + taskList.toTaskCountFormat());
+        return "Noted. I've removed this task:\n   " + task + "\n" + taskList.toTaskCountFormat();
     }
 }

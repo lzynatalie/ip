@@ -3,7 +3,6 @@ package iris.command;
 import iris.Storage;
 import iris.StringFormatter;
 import iris.TaskList;
-import iris.Ui;
 import iris.exception.InvalidInputException;
 import iris.exception.IrisException;
 import iris.task.EventTask;
@@ -16,6 +15,13 @@ public class EventCommand extends Command {
     private String from;
     private String to;
 
+    /**
+     * Initialises an event command.
+     *
+     * @param description Description of the event task.
+     * @param from Start time of the event task.
+     * @param to End time of the event task.
+     */
     public EventCommand(String description, String from, String to) {
         this.description = description;
         this.from = from;
@@ -23,7 +29,7 @@ public class EventCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws IrisException {
+    public String execute(TaskList taskList, Storage storage) throws IrisException {
         if (description.isEmpty()) {
             throw new InvalidInputException("The description of an EVENT cannot be empty.");
         }
@@ -39,6 +45,6 @@ public class EventCommand extends Command {
         taskList.addTask(task);
         storage.store(taskList.asList());
 
-        ui.showMessage("Got it. I've added this task:\n   " + task + "\n" + taskList.toTaskCountFormat());
+        return "Got it. I've added this task:\n   " + task + "\n" + taskList.toTaskCountFormat();
     }
 }

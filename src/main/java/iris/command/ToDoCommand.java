@@ -2,7 +2,6 @@ package iris.command;
 
 import iris.Storage;
 import iris.TaskList;
-import iris.Ui;
 import iris.exception.InvalidInputException;
 import iris.exception.IrisException;
 import iris.task.ToDoTask;
@@ -18,7 +17,7 @@ public class ToDoCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws IrisException {
+    public String execute(TaskList taskList, Storage storage) throws IrisException {
         if (description.isEmpty()) {
             throw new InvalidInputException("The description of a TODO cannot be empty.");
         }
@@ -27,6 +26,6 @@ public class ToDoCommand extends Command {
         taskList.addTask(task);
         storage.store(taskList.asList());
 
-        ui.showMessage("Got it. I've added this task:\n   " + task + "\n" + taskList.toTaskCountFormat());
+        return "Got it. I've added this task:\n   " + task + "\n" + taskList.toTaskCountFormat();
     }
 }

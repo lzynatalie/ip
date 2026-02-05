@@ -3,7 +3,6 @@ package iris.command;
 import iris.Storage;
 import iris.StringFormatter;
 import iris.TaskList;
-import iris.Ui;
 import iris.exception.InvalidInputException;
 import iris.exception.IrisException;
 import iris.task.DeadlineTask;
@@ -15,13 +14,19 @@ public class DeadlineCommand extends Command {
     private String description;
     private String by;
 
+    /**
+     * Initialises a deadline command.
+     *
+     * @param description Description of the deadline task.
+     * @param by Deadline of the deadline task.
+     */
     public DeadlineCommand(String description, String by) {
         this.description = description;
         this.by = by;
     }
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws IrisException {
+    public String execute(TaskList taskList, Storage storage) throws IrisException {
         if (description.isEmpty()) {
             throw new InvalidInputException("The description of a DEADLINE cannot be empty.");
         }
@@ -33,7 +38,7 @@ public class DeadlineCommand extends Command {
         taskList.addTask(task);
         storage.store(taskList.asList());
 
-        ui.showMessage("Got it. I've added this task:\n   " + task + "\n" + taskList.toTaskCountFormat());
+        return "Got it. I've added this task:\n   " + task + "\n" + taskList.toTaskCountFormat();
     }
 
     @Override

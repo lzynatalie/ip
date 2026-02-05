@@ -9,6 +9,12 @@ public abstract class Task {
 
     public Task() {}
 
+    /**
+     * Initialises a task.
+     *
+     * @param description Description of this task.
+     * @param isDone Completion status of this task.
+     */
     public Task(String description, boolean isDone) {
         this.description = description;
         this.isDone = isDone;

@@ -2,7 +2,6 @@ package iris.command;
 
 import iris.Storage;
 import iris.TaskList;
-import iris.Ui;
 import iris.exception.InvalidCommandException;
 import iris.exception.IrisException;
 import iris.task.Task;
@@ -18,7 +17,7 @@ public class MarkCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws IrisException {
+    public String execute(TaskList taskList, Storage storage) throws IrisException {
         if (taskList.getNumTasks() == 0) {
             throw new InvalidCommandException("There are no tasks right now.");
         }
@@ -31,6 +30,6 @@ public class MarkCommand extends Command {
         task.markAsDone();
         storage.store(taskList.asList());
 
-        ui.showMessage("Nice! I've marked this task as done:\n   " + task);
+        return "Nice! I've marked this task as done:\n   " + task;
     }
 }
