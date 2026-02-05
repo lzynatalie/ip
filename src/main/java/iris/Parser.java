@@ -1,6 +1,17 @@
 package iris;
 
-import iris.command.*;
+import iris.command.ClearCommand;
+import iris.command.Command;
+import iris.command.DeadlineCommand;
+import iris.command.DeleteCommand;
+import iris.command.EventCommand;
+import iris.command.ExitCommand;
+import iris.command.FindCommand;
+import iris.command.ListCommand;
+import iris.command.MarkCommand;
+import iris.command.ToDoCommand;
+import iris.command.UnknownCommand;
+import iris.command.UnmarkCommand;
 import iris.exception.InvalidInputException;
 
 /**
@@ -21,17 +32,17 @@ public class Parser {
         String input = inputs.length > 1 ? inputs[1] : "";
 
         return switch (command) {
-            case "bye" -> new ExitCommand();
-            case "list" -> new ListCommand();
-            case "mark" -> new MarkCommand(parseIndex(input));
-            case "unmark" -> new UnmarkCommand(parseIndex(input));
-            case "todo" -> new ToDoCommand(parseDescription(input));
-            case "deadline" -> parseDeadline(input);
-            case "event" -> parseEvent(input);
-            case "delete" -> new DeleteCommand(parseIndex(input));
-            case "find" -> new FindCommand(parseDescription(input));
-            case "clear" -> new ClearCommand();
-            default -> new UnknownCommand();
+        case "bye" -> new ExitCommand();
+        case "list" -> new ListCommand();
+        case "mark" -> new MarkCommand(parseIndex(input));
+        case "unmark" -> new UnmarkCommand(parseIndex(input));
+        case "todo" -> new ToDoCommand(parseDescription(input));
+        case "deadline" -> parseDeadline(input);
+        case "event" -> parseEvent(input);
+        case "delete" -> new DeleteCommand(parseIndex(input));
+        case "find" -> new FindCommand(parseDescription(input));
+        case "clear" -> new ClearCommand();
+        default -> new UnknownCommand();
         };
     }
 

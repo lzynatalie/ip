@@ -1,8 +1,8 @@
 package iris.task;
 
-import iris.StringFormatter;
-
 import java.time.LocalDateTime;
+
+import iris.StringFormatter;
 
 /**
  * A task that needs to be done before a specific date/time.

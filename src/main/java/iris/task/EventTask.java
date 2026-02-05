@@ -1,8 +1,8 @@
 package iris.task;
 
-import iris.StringFormatter;
-
 import java.time.LocalDateTime;
+
+import iris.StringFormatter;
 
 /**
  * A task that starts at a specific date/time and ends at a specific date/time.
@@ -30,7 +30,8 @@ public class EventTask extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: "
-                + StringFormatter.toOutputDateTimeFormat(from) + " to: " + StringFormatter.toOutputDateTimeFormat(to) + ")";
+        return "[E]" + super.toString()
+                + " (from: " + StringFormatter.toOutputDateTimeFormat(from)
+                + " to: " + StringFormatter.toOutputDateTimeFormat(to) + ")";
     }
 }
