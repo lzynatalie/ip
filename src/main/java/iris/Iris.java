@@ -11,6 +11,11 @@ public class Iris {
     private TaskList taskList;
     private Ui ui;
 
+    /**
+     * Initialises an Iris object using the given file path.
+     *
+     * @param filePath File path of saved tasks.
+     */
     public Iris(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -22,6 +27,9 @@ public class Iris {
         }
     }
 
+    /**
+     * Runs the Iris program.
+     */
     public void run() {
         ui.showWelcome();
 

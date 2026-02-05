@@ -10,6 +10,13 @@ import iris.StringFormatter;
 public class DeadlineTask extends Task {
     private LocalDateTime by;
 
+    /**
+     * Initialises a deadline task.
+     *
+     * @param description Description of this task.
+     * @param isDone Completion status of this task.
+     * @param by Deadline of this task.
+     */
     public DeadlineTask(String description, boolean isDone, LocalDateTime by) {
         super(description, isDone);
         this.by = by;

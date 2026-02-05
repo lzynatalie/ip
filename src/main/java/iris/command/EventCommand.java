@@ -16,6 +16,13 @@ public class EventCommand extends Command {
     private String from;
     private String to;
 
+    /**
+     * Initialises an event command.
+     *
+     * @param description Description of the event task.
+     * @param from Start time of the event task.
+     * @param to End time of the event task.
+     */
     public EventCommand(String description, String from, String to) {
         this.description = description;
         this.from = from;
