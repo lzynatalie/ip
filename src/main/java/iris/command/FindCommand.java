@@ -2,7 +2,6 @@ package iris.command;
 
 import iris.Storage;
 import iris.TaskList;
-import iris.Ui;
 import iris.exception.InvalidCommandException;
 import iris.exception.InvalidInputException;
 import iris.exception.IrisException;
@@ -18,7 +17,7 @@ public class FindCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws IrisException {
+    public String execute(TaskList taskList, Storage storage) throws IrisException {
         if (description.isEmpty()) {
             throw new InvalidInputException("Please provide a valid description.");
         }
@@ -29,9 +28,9 @@ public class FindCommand extends Command {
         TaskList tasks = taskList.findTasks(description);
 
         if (tasks.getNumTasks() == 0) {
-            ui.showMessage("There are no tasks containing the description \"" + description + "\".");
+            return "There are no tasks containing the description \"" + description + "\".";
         } else {
-            ui.showMessage("Here are the matching tasks in your list:\n" + tasks);
+            return "Here are the matching tasks in your list:\n" + tasks;
         }
     }
 }

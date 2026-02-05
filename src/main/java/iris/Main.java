@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    private Iris iris = new Iris();
+    private Iris iris = new Iris("./data/iris.txt");
 
     @Override
     public void start(Stage stage) {

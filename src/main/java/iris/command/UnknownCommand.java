@@ -2,7 +2,6 @@ package iris.command;
 
 import iris.Storage;
 import iris.TaskList;
-import iris.Ui;
 import iris.exception.InvalidCommandException;
 
 /**
@@ -13,7 +12,7 @@ public class UnknownCommand extends Command {
     public UnknownCommand() {}
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws InvalidCommandException {
+    public String execute(TaskList taskList, Storage storage) throws InvalidCommandException {
         throw new InvalidCommandException();
     }
 }
