@@ -11,8 +11,6 @@ public class Iris {
     private TaskList taskList;
     private Ui ui;
 
-    public Iris() {}
-
     /**
      * Initialises an Iris object using the given file path.
      *
