@@ -24,7 +24,7 @@ public class Parser {
      *
      * @param fullCommand Full command string.
      * @return Command to execute.
-     * @throws InvalidInputException
+     * @throws InvalidInputException If an invalid input was provided.
      */
     public static Command parse(String fullCommand) throws InvalidInputException {
         String[] inputs = fullCommand.split(" ", 2);

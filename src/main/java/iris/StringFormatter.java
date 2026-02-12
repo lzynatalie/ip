@@ -38,7 +38,7 @@ public class StringFormatter {
      *
      * @param dateTime Date and time string.
      * @return LocalDateTime object.
-     * @throws InvalidInputException
+     * @throws InvalidInputException If an invalid input was provided.
      */
     public static LocalDateTime toLocalDateTime(String dateTime) throws InvalidInputException {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

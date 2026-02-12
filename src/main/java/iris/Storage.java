@@ -27,7 +27,7 @@ public class Storage {
      * Loads tasks from hard disk.
      *
      * @return List of tasks.
-     * @throws IrisException
+     * @throws IrisException If an error occurred.
      */
     public List<Task> load() throws IrisException {
         ArrayList<Task> tasks = new ArrayList<>();
@@ -72,7 +72,7 @@ public class Storage {
      * Stores tasks onto hard disk.
      *
      * @param tasks List of tasks.
-     * @throws IrisException
+     * @throws IrisException If an error occurred.
      */
     public void store(List<Task> tasks) throws IrisException {
         String saveContent = "";

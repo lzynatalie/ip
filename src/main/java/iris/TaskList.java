@@ -36,7 +36,7 @@ public class TaskList {
      *
      * @param index Index of task to be deleted.
      * @return Task that was deleted.
-     * @throws InvalidInputException
+     * @throws InvalidInputException If an invalid index was provided.
      */
     public Task deleteTask(int index) throws InvalidInputException {
         if (index < 1 || index > tasks.size()) {
@@ -73,7 +73,7 @@ public class TaskList {
      *
      * @param index Index of task to be retrieved.
      * @return Task that was retrieved.
-     * @throws InvalidInputException
+     * @throws InvalidInputException If an invalid index was provided.
      */
     public Task getTask(int index) throws InvalidInputException {
         if (index < 1 || index > tasks.size()) {
