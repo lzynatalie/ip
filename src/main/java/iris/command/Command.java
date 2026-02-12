@@ -16,7 +16,7 @@ public abstract class Command {
      * @param taskList Task list to perform task operations on.
      * @param ui Ui object to display outputs.
      * @param storage Storage object to store tasks.
-     * @throws IrisException
+     * @throws IrisException If this command was used incorrectly.
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) throws IrisException {
         ui.showMessage(execute(taskList, storage));
