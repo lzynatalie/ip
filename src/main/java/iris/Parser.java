@@ -27,7 +27,7 @@ public class Parser {
      * @throws InvalidInputException If an invalid input was provided.
      */
     public static Command parse(String fullCommand) throws InvalidInputException {
-        String[] inputs = fullCommand.split(" ", 2);
+        String[] inputs = splitCommand(fullCommand);
         String command = inputs[0];
         String input = inputs.length > 1 ? inputs[1] : "";
 
@@ -63,7 +63,7 @@ public class Parser {
     }
 
     private static DeadlineCommand parseDeadline(String input) throws InvalidInputException {
-        String[] deadlineParts = input.split("/", 2);
+        String[] deadlineParts = splitArguments(input, 2);
 
         if (deadlineParts.length < 2 || !deadlineParts[1].startsWith("by ")) {
             throw new InvalidInputException("Please provide a deadline.");
@@ -76,7 +76,7 @@ public class Parser {
     }
 
     private static EventCommand parseEvent(String input) throws InvalidInputException {
-        String[] eventParts = input.split("/", 3);
+        String[] eventParts = splitArguments(input, 3);
 
         if (eventParts.length < 3 || !eventParts[1].startsWith("from ") || !eventParts[2].startsWith("to ")) {
             throw new InvalidInputException("Please provide a start and end time.");
@@ -87,5 +87,13 @@ public class Parser {
         String to = parseArgument(eventParts[2]);
 
         return new EventCommand(description, from, to);
+    }
+
+    private static String[] splitCommand(String fullCommand) {
+        return fullCommand.split(" ", 2);
+    }
+
+    private static String[] splitArguments(String input, int numArgs) {
+        return input.split("/", numArgs);
     }
 }

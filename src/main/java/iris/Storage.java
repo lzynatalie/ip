@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import iris.exception.InvalidInputException;
 import iris.exception.IrisException;
 import iris.task.DeadlineTask;
 import iris.task.EventTask;
@@ -55,13 +56,10 @@ public class Storage {
             String[] taskParts = task.split(" \\| ");
             boolean isDone = taskParts[1].equals("1");
             switch (taskParts[0]) {
-            case "T" -> tasks.add(new ToDoTask(taskParts[2], isDone));
-            case "D" -> tasks.add(new DeadlineTask(taskParts[2], isDone,
-                    StringFormatter.toLocalDateTime(taskParts[3])));
-            case "E" -> tasks.add(new EventTask(taskParts[2], isDone,
-                    StringFormatter.toLocalDateTime(taskParts[3]),
-                    StringFormatter.toLocalDateTime(taskParts[4])));
-            default -> throw new IrisException("Unknown task type");
+                case "T" -> loadToDoTask(tasks, taskParts[2], isDone);
+                case "D" -> loadDeadlineTask(tasks, taskParts[2], isDone, taskParts[3]);
+                case "E" -> loadEventTask(tasks, taskParts[2], isDone, taskParts[3], taskParts[4]);
+                default -> throw new IrisException("Unknown task type");
             }
         }
 
@@ -97,5 +95,23 @@ public class Storage {
             return true;
         }
         return false;
+    }
+
+    private void loadToDoTask(ArrayList<Task> tasks, String description, boolean isDone) {
+        ToDoTask task = new ToDoTask(description, isDone);
+        tasks.add(task);
+    }
+
+    private void loadDeadlineTask(ArrayList<Task> tasks, String description, boolean isDone, String by)
+            throws InvalidInputException {
+        DeadlineTask task = new DeadlineTask(description, isDone, StringFormatter.toLocalDateTime(by));
+        tasks.add(task);
+    }
+
+    private void loadEventTask(ArrayList<Task> tasks, String description, boolean isDone, String from, String to)
+            throws InvalidInputException {
+        EventTask task = new EventTask(description, isDone,
+                StringFormatter.toLocalDateTime(from), StringFormatter.toLocalDateTime(to));
+        tasks.add(task);
     }
 }
