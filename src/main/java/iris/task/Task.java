@@ -7,8 +7,6 @@ public abstract class Task {
     private String description;
     private boolean isDone;
 
-    public Task() {}
-
     /**
      * Initialises a task.
      *
@@ -16,6 +14,7 @@ public abstract class Task {
      * @param isDone Completion status of this task.
      */
     public Task(String description, boolean isDone) {
+        assert !description.isEmpty() : "Description should not be empty";
         this.description = description;
         this.isDone = isDone;
     }
