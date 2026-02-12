@@ -3,7 +3,6 @@ package iris;
 import java.util.ArrayList;
 import java.util.List;
 
-import iris.exception.InvalidInputException;
 import iris.task.Task;
 
 /**
@@ -28,6 +27,7 @@ public class TaskList {
      * @param task Task to be added.
      */
     public void addTask(Task task) {
+        assert task != null : "Task should not be null";
         tasks.add(task);
     }
 
@@ -36,12 +36,9 @@ public class TaskList {
      *
      * @param index Index of task to be deleted.
      * @return Task that was deleted.
-     * @throws InvalidInputException
      */
-    public Task deleteTask(int index) throws InvalidInputException {
-        if (index < 1 || index > tasks.size()) {
-            throw new InvalidInputException("Index must be from 1 to " + tasks.size() + ".");
-        }
+    public Task deleteTask(int index) {
+        assert index > 0 : "Index should be more than 0";
         return tasks.remove(index - 1);
     }
 
@@ -59,6 +56,8 @@ public class TaskList {
      * @return TaskList containing matching tasks.
      */
     public TaskList findTasks(String description) {
+        assert !description.isEmpty() : "Description should not be empty";
+
         TaskList matchingTasks = new TaskList();
         for (Task task : tasks) {
             if (task.getDescription().contains(description)) {
@@ -73,12 +72,9 @@ public class TaskList {
      *
      * @param index Index of task to be retrieved.
      * @return Task that was retrieved.
-     * @throws InvalidInputException
      */
-    public Task getTask(int index) throws InvalidInputException {
-        if (index < 1 || index > tasks.size()) {
-            throw new InvalidInputException("Index must be from 1 to " + tasks.size() + ".");
-        }
+    public Task getTask(int index) {
+        assert index > 0 : "Index should be more than 0";
         return tasks.get(index - 1);
     }
 
@@ -106,7 +102,7 @@ public class TaskList {
      * @return Task count string.
      */
     public String toTaskCountFormat() {
-        int numTasks = tasks.size();
+        int numTasks = getNumTasks();
         return numTasks == 1
                 ? "Now you have 1 task in the list."
                 : "Now you have " + numTasks + " tasks in the list.";

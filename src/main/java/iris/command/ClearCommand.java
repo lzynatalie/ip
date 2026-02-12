@@ -19,6 +19,7 @@ public class ClearCommand extends Command {
         }
 
         taskList.clearTasks();
+        assert taskList.getNumTasks() == 0 : "There should be 0 tasks in the list";
         storage.store(taskList.asList());
 
         return "Cleared! There are no more tasks in the list.";
